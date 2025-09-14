@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Udriven - Glass UI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://css.gg/css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(115deg, #1e1b4b, #1e293b, #312e81);
+            color: #e2e8f0;
+        }
+
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.02);
+            -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        
+        .nav-link {
+            transition: transform 0.2s ease-in-out, background-color 0.2s;
+        }
+        
+        .nav-link:hover {
+            transform: scale(1.05);
+        }
+        
+        .nav-link.active {
+            background: rgba(255, 255, 255, 0.08);
+            color: #ffffff;
+        }
+
+        .main-content-panel {
+            transition: opacity 0.3s ease-in-out;
+        }
+        
+        #sidebar, #main-content {
+            transition: all 0.3s ease-in-out;
+        }
+
+        @keyframes bouncy {
+            0% { transform: scale(0.95); opacity: 0; }
+            70% { transform: scale(1.02); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .animate-bouncy {
+            animation: bouncy 0.4s ease-out;
+        }
+
+        /* NEW: JS-driven animation style */
+        .nav-item-animate {
+            opacity: 0;
+            transform: scale(0.9) translateY(10px);
+            transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+        }
+        .nav-item-animate.visible {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+
+    </style>
+</head>
+<body class="text-white">
+
+    <div class="flex min-h-screen">
+        <!-- Sidebar Navigation -->
+        <aside id="sidebar" class="glass-effect w-64 flex-shrink-0 h-screen flex flex-col p-4 fixed z-40">
+            <div class="flex items-center justify-between text-2xl font-bold text-white mb-10 pl-2">
+                <span class="sidebar-text">Udriven</span>
+                <button id="sidebar-toggle-btn" class="p-1 rounded-full hover:bg-white/10 transition-colors">
+                     <i class="gg-menu-right-alt"></i>
+                </button>
+            </div>
+            
+            <nav class="flex-grow flex flex-col gap-2">
+                <div class="main-links flex flex-col gap-2">
+                    <h3 class="nav-item-animate sidebar-text px-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">Main</h3>
+                    <a href="#" data-target="dashboard-content" class="nav-item-animate nav-link flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-full text-slate-300 hover:text-white">
+                        <i class="gg-layout-grid"></i>
+                        <span class="sidebar-text">Dashboard</span>
+                    </a>
+                    <a href="#" data-target="todo-content" class="nav-item-animate nav-link flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-full text-slate-300 hover:text-white">
+                        <i class="gg-check-square"></i>
+                        <span class="sidebar-text">To do grid</span>
+                    </a>
+                    <a href="#" data-target="study-content" class="nav-item-animate nav-link flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-full text-slate-300 hover:text-white">
+                        <i class="gg-bookmark"></i>
+                        <span class="sidebar-text">Study space</span>
+                    </a>
+                    <a href="#" data-target="calendars-content" class="nav-item-animate nav-link flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-full text-slate-300 hover:text-white">
+                       <i class="gg-calendar-today"></i>
+                        <span class="sidebar-text">Calendars</span>
+                    </a>
+                </div>
+
+                <div class="support-links flex flex-col gap-2 mt-4">
+                     <h3 class="nav-item-animate sidebar-text px-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">Support</h3>
+                     <a href="#" data-target="settings-content" class="nav-item-animate nav-link flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-full text-slate-300 hover:text-white">
+                        <i class="gg-options"></i>
+                        <span class="sidebar-text">Settings</span>
+                    </a>
+                </div>
+            </nav>
+            
+            <!-- Combined Footer Section -->
+            <div class="sidebar-text mt-auto">
+                <div class="border-t border-white/10 pt-4">
+                    <p id="quote-text" class="text-sm text-slate-400 italic"></p>
+                    <p id="quote-author" class="text-xs text-slate-500 text-right mt-2"></p>
+                </div>
+                 <div class="text-center pt-2">
+                     <p class="text-xs text-slate-500">Made with ❤️ by Udriven Teams</p>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main id="main-content" class="flex-1 ml-64 p-8">
+             <!-- Content will be injected here by JavaScript -->
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const mainContent = document.getElementById('main-content');
+            const sidebar = document.getElementById('sidebar');
+            const sidebarToggleBtn = document.getElementById('sidebar-toggle-btn');
+            const sidebarTexts = document.querySelectorAll('.sidebar-text');
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            const quotes = [
+                { text: "The secret of getting ahead is getting started.", author: "Mark Twain" },
+                { text: "Don't watch the clock; do what it does. Keep going.", author: "Sam Levenson" },
+                { text: "The future depends on what you do today.", author: "Mahatma Gandhi" }
+            ];
+            const quoteTextElement = document.getElementById('quote-text');
+            const quoteAuthorElement = document.getElementById('quote-author');
+
+            function displayRandomQuote() {
+                const randomIndex = Math.floor(Math.random() * quotes.length);
+                const randomQuote = quotes[randomIndex];
+                if (quoteTextElement && quoteAuthorElement) {
+                    quoteTextElement.textContent = `"${randomQuote.text}"`;
+                    quoteAuthorElement.textContent = `- ${randomQuote.author}`;
+                }
+            }
+            displayRandomQuote();
+            setInterval(displayRandomQuote, 10000);
+
+            sidebarToggleBtn.addEventListener('click', () => {
+                sidebar.classList.toggle('w-64');
+                sidebar.classList.toggle('w-20');
+                mainContent.classList.toggle('ml-64');
+                mainContent.classList.toggle('ml-20');
+                
+                sidebarTexts.forEach(text => { text.classList.toggle('hidden'); });
+                navLinks.forEach(link => { link.classList.toggle('justify-center'); });
+            });
+
+            const pageContents = {
+                'dashboard-content': `<div class="glass-effect rounded-xl p-6 main-content-panel animate-bouncy"><h1 class="text-3xl font-bold text-white">Dashboard</h1><p class="text-slate-300 mt-2">Welcome back! Here's a summary of your progress.</p></div>`,
+                'todo-content': `<div class="glass-effect rounded-xl p-6 main-content-panel animate-bouncy"><h1 class="text-3xl font-bold text-white">To Do Grid</h1><p class="text-slate-300 mt-2">Manage your tasks and projects here.</p></div>`,
+                'study-content': `<div class="glass-effect rounded-xl p-6 main-content-panel animate-bouncy"><h1 class="text-3xl font-bold text-white">Study Space</h1><p class="text-slate-300 mt-2">Focus on your study sessions.</p></div>`,
+                'calendars-content': `<div class="glass-effect rounded-xl p-6 main-content-panel animate-bouncy"><h1 class="text-3xl font-bold text-white">Calendars</h1><p class="text-slate-300 mt-2">View your schedules and events.</p></div>`,
+                'settings-content': `<div class="glass-effect rounded-xl p-6 main-content-panel animate-bouncy"><h1 class="text-3xl font-bold text-white">Settings</h1><p class="text-slate-300 mt-2">Configure your application preferences.</p></div>`
+            };
+            
+            function setActiveLink(link) {
+                navLinks.forEach(item => item.classList.remove('active'));
+                link.classList.add('active');
+            }
+            
+            function showPage(targetId) {
+                mainContent.innerHTML = pageContents[targetId] || '<p>Content not found.</p>';
+            }
+
+            if (navLinks.length > 0) {
+                setActiveLink(navLinks[0]);
+                const initialTarget = navLinks[0].getAttribute('data-target');
+                showPage(initialTarget);
+            }
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(event) {
+                    event.preventDefault(); 
+                    const targetId = this.getAttribute('data-target');
+                    setActiveLink(this);
+                    showPage(targetId);
+                });
+            });
+
+            // NEW: JS-driven animation script
+            const animatedNavItems = document.querySelectorAll('.nav-item-animate');
+            animatedNavItems.forEach((item, index) => {
+                setTimeout(() => {
+                    item.classList.add('visible');
+                }, (index + 1) * 100); // 100ms stagger
+            });
+        });
+    </script>
+
+</body>
+</html>
+
