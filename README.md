@@ -86,7 +86,7 @@ Create your own study vibe:
 
 | Tech | Purpose |
 |------|----------|
-| ⚛️ React.js / Next.js | Frontend |
+| Html and Css and Js| Frontend |
 | 🎨 Tailwind CSS | Styling |
 | 🔥 Firebase / Firestore | Data & Auth |
 | 🎵 Spotify API | Music Integration |
