@@ -3,108 +3,108 @@ All the Study Space page Devs are requested to just fork this repo and start wor
 
 [![Hacktoberfest 2025](https://img.shields.io/badge/Hacktoberfest-2025-blueviolet)](https://hacktoberfest.com/)
 
+<!-- Animated Banner -->
+<p align="center">
+  <img src="https://i.ibb.co/VqzNnXm/animated-banner.gif" width="100%" alt="Study Space Animated Banner">
+</p>
+
 <h1 align="center">
-  ✨ <span style="color:#00F0FF;">Study Space</span> — Your Personal Command Center for Deep Learning 🚀
+  🌌 <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=700&size=28&pause=1000&color=00F7FF&center=true&vCenter=true&width=600&lines=Welcome+to+Study+Space!;Your+Command+Center+for+Deep+Focus;Smart+Timer+🎯+.+Notes+📝+.+Music+🎧+.+Motivation+🔥" alt="Typing SVG" />
 </h1>
 
 <p align="center">
-  <img src="https://github.com/DenverCoder1/readme-typing-svg/blob/main/demo.gif" width="420" alt="Typing SVG">
+  <b>Deep Focus • Productivity • Immersive Learning</b>
 </p>
+
+---
+
+## 🌠 The Philosophy
 
 <p align="center">
-  <b>Not just a timer. A complete focus ecosystem. 🔥</b><br>
-  Built for deep work, effortless organization, and distraction-free study sessions.
+  <img src="https://github.com/Devloop01/ReadMe-GIFs/raw/main/techstack.gif" width="600">
+</p>
+
+Traditional studying means juggling multiple tabs — timer, notes, music, and lectures — all pulling your attention away.  
+**Study Space** merges them into one **beautiful, flexible, and animated workspace** that adapts to *your* study flow.
+
+---
+
+## ⚡ Core Features (Animated Overview)
+
+| Feature | Description |
+|----------|-------------|
+| 🎯 **Focus Timer** | Smart Pomodoro system with auto breaks and rhythm tracking |
+| 💻 **Customizable Workspace** | Drag, resize, float, and layer windows freely |
+| 🎬 **Media Integration** | YouTube + Spotify built right in |
+| 📝 **Quick Notes** | Floating, auto-synced notes |
+| 🌍 **Community Motivation** | Global leaderboard for focus sprints |
+
+<p align="center">
+  <img src="https://github.com/Anmol-Baranwal/Cool-GIFs-For-Readme/blob/main/gifs/workflow.gif" width="500">
 </p>
 
 ---
 
-## 🌌 <span style="color:#00FFFF;">The Philosophy</span>
+## 🧠 Intelligent Focus Timer
 
-Traditional studying means juggling multiple tabs — your timer ⏱️, notes 📝, music 🎧, lectures 🎥 — and distractions everywhere.  
-**Study Space** brings everything into one elegant, powerful interface so you can study like a pro.
+<p align="center">
+  <img src="https://github.com/Anmol-Baranwal/Cool-GIFs-For-Readme/blob/main/gifs/timer.gif" width="400">
+</p>
 
----
-
-## 🚀 <span style="color:#F7B500;">Core Features</span>
-
-### 🧠 Intelligent Focus Timer
-> The heart of your productivity.
-
-- 🎯 **Start Sprints:** Work in short, powerful bursts.  
-- 🕒 **Smart Breaks:** Get automatic short & long breaks.  
-- 🔁 **Build Habits:** Designed for sustainable focus.
+- Start focused **sprints** ⏱️  
+- Take **smart breaks** 😌  
+- Build long-term **consistency** 🧩  
 
 ---
 
-### 🖥️ Fully Customizable Workspace
-> Your desktop. Your rules.
+## 🖥️ Customizable Workspace
 
-- 🪟 **Floating Windows:** Notes, music, and videos in draggable panels.  
-- 🧩 **Dynamic Layout:** Minimize or maximize as you wish.  
-- 🌈 **Focus Mode:** Hide distractions & lock in.
+<p align="center">
+  <img src="https://github.com/Anmol-Baranwal/Cool-GIFs-For-Readme/blob/main/gifs/layout.gif" width="500">
+</p>
 
----
-
-### 🎬 Seamless Media Integration
-
-- 📺 **Embed YouTube Videos:** Watch lectures directly in-app.  
-- 🎥 **Immersive Background Mode:** Play videos in full-screen as your workspace backdrop.  
-- 🔒 **Layer Lock:** Pin media behind your tools for uninterrupted multitasking.  
-- 🎵 **Spotify Integration:** Chill lofi beats & focus playlists, right inside your workspace.
+- Floating windows for notes, videos, and playlists  
+- Lock lectures in the background  
+- Create your *perfect* study vibe 🎧  
 
 ---
 
-### 🧾 Built-in Study Tools
+## 🎬 Seamless Media Integration
 
-- 📝 **Quick Notes:** Jot down ideas anytime.  
-- ☁️ **Auto Sync:** All data syncs with your Udriven account.  
-- 📊 **Session Insights:** Track focus stats & trends.
+- 📺 Embed YouTube videos directly  
+- 🎶 Spotify playlists for study moods  
+- 🔒 Lock media behind floating notes  
 
----
-
-### 🌍 Community & Motivation
-
-> You’re not studying alone.
-
-- 🏆 **Leaderboards:** Earn points with each focus session.  
-- 🔥 **Motivational System:** See your progress and others worldwide.
+<p align="center">
+  <img src="https://github.com/Anmol-Baranwal/Cool-GIFs-For-Readme/blob/main/gifs/music.gif" width="400">
+</p>
 
 ---
 
-## 🧩 Your Space, Your Rules
+## 🌍 Global Community Motivation
 
-Create your own study vibe:
+<p align="center">
+  <img src="https://github.com/Anmol-Baranwal/Cool-GIFs-For-Readme/blob/main/gifs/community.gif" width="450">
+</p>
 
-💻 **Minimal Mode:** Timer + Notes for total clarity.  
-🚀 **Mission Control:** Locked lecture + floating notes + music = full immersion.
-
-> ✨ *Start your timer, customize your space, and get to work.* ✨
+- 🏆 Leaderboards to keep you accountable  
+- 🔥 Motivation through collective progress  
 
 ---
 
 ## 💻 Tech Stack
 
-| Tech | Purpose |
-|------|----------|
-| Html and Css and Js| Frontend |
-| 🎨 Tailwind CSS | Styling |
-| 🔥 Firebase / Firestore | Data & Auth |
-| 🎵 Spotify API | Music Integration |
-| 📺 YouTube Embed API | Media Integration |
+<p align="center">
+  <img src="https://skillicons.dev/icons?i=react,nextjs,tailwind,firebase,spotify,youtube,figma" />
+</p>
 
 ---
 
-## 💫 Quick Start
+## 🧩 Installation
 
 ```bash
-# Clone the repository
 git clone https://github.com/your-username/study-space.git
-
-# Navigate to the directory
 cd study-space
-
-# Install dependencies
 npm install
-
-# Start the app
 npm run dev
+
