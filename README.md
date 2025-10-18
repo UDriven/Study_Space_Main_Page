@@ -3,101 +3,125 @@ All the Study Space page Devs are requested to just fork this repo and start wor
 
 [![Hacktoberfest 2025](https://img.shields.io/badge/Hacktoberfest-2025-blueviolet)](https://hacktoberfest.com/)
 
+<!-- 🌸 Aesthetic Animated README for Study Space -->
 <p align="center">
-  <img src="https" alt="Udriven Logo" width="120">
+  <img src="https://i.imgur.com/E2sX5cE.gif" width="100%" alt="Soft gradient animated banner">
 </p>
 
-<h1 align="center">Udriven</h1>
+<h1 align="center">
+  ☁️ <img src="https://readme-typing-svg.demolab.com?font=Kalam&size=28&duration=3000&pause=800&color=F7A8B8&center=true&vCenter=true&width=600&lines=Welcome+to+Study+Space!;Your+Calm+Corner+for+Deep+Focus;Study.+Create.+Grow.+🌱" alt="Typing Animation" />
+</h1>
 
 <p align="center">
-  <b>An open-source productivity ecosystem for mastering focus, tasks, and habits.</b>
-  <br />
-  <a href="#key-features"><strong>Explore the features »</strong></a>
-  <br />
-  <br />
-  <a href="#">View Demo</a> ·
-  <a href="https://github.com/Soumya-codr/udriven/issues">Report Bug</a> ·
-  <a href="https://github.com/Soumya-codr/udriven/issues">Request Feature</a> </p>
-
-<p align="center">
-  <img src="https://img.shields.io/github/license/Soumya-codr/udriven?style=for-the-badge" alt="License">
-  <img src="https://img.shields.io/github/stars/Soumya-codr/udriven?style=for-the-badge" alt="Stars">
-  <img src="https://img.shields.io/github/forks/Soumya-codr/udriven?style=for-the-badge" alt="Forks">
-  <img src="https://img.shields.io/github/issues/Soumya-codr/udriven?style=for-the-badge" alt="Open Issues">
-  </p>
-
----
-
-<p align="center">
-  <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3Zzc3RkcGZocjN2bTdqNjdqN3hpNmpmZzU1Z21qYTRqOHl0NHlqOCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/L1R1tvI9svkIWwpYxO/giphy.gif" alt="Udriven App Preview" width="80%">
-</p>
-
-## About The Project
-
-Udriven is an all-in-one productivity ecosystem designed for students and professionals who want to master their workflow. We're not just another to-do list; we're a complete environment built to manage your focus, tasks, and long-term goals.
-
-This open-source project is built by a passionate team of students from **The Polaris Unofficial Tech Club** to create the ultimate tool for focused work and personal growth.
-
----
-
-## ✨ Key Features
-
-Udriven is built around several core modules that sync "interglobally" to create one seamless experience.
-
-| Feature | Description |
-| :--- | :--- |
-| **🚀 Study Space** | A customizable, distraction-free environment with a smart Pomodoro timer, floating windows, integrated YouTube lectures, Spotify, and note-taking. |
-| **🎯 To-Do Grid** | The ultimate "grind mode." A full-screen, deep-work session with *no breaks* allowed. Quitting a session is tracked to build accountability. |
-| **📊 Dashboard** | Your central command center. See graphs from your Insights, upcoming events from your Calendar, and unfinished work from your Study Space all in one place. |
-| **📈 Insights** | Visualize your productivity. Get detailed graphs and analytics on your work habits, session consistency, and task completion rates. |
-| **🗓️ Calendars** | Manage your high-importance events, set countdowns for exams, and block out dedicated time for productive work. |
-| **🎧 Music Zone (Heal)** | A dedicated space to disconnect and relax with soothing music and ambient sounds, separate from your work modules. |
-
----
-
-## 🚀 Feature Spotlights (Animated)
-
-### 1. The Ultimate Study Space
-
-Forget juggling tabs. Our Study Space lets you build your perfect focus environment. Drag windows, embed your YouTube lecture, lock it in the background, and float your notes on top.
-
-<p align="center">
-  <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExejhxN2RsczVjcmRkb2NqajRkNGN3a3JmdGZqM20yMzdweHl6enRiaSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/FYBfWueS8crTy/giphy.gif" alt="Study Space Animation" width="70%">
-</p>
-
-### 2. The Unbreakable To-Do Grid
-
-When it's time for pure, uninterrupted work, enter the **To-Do Grid**. This locks you into your session. There are no breaks and no escape. If you quit, it's recorded. This is for serious accountability.
-
-<p align="center">
-  <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM2F1cHg4amFkbDVrYW5oNTNpaDlyNmx6NnQyZnZtbzVjN3k4OXR5byZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/2aNMNAPUVqQJ2/giphy.gif" alt="To-Do Grid Animation" width="70%">
+  <b>Where focus meets peace ✨</b><br>
+  <em>Study smarter, stay centered, and make learning your lifestyle.</em>
 </p>
 
 ---
 
-## 🛠️ Built With
+## 🌸 The Philosophy
 
-List the technologies, frameworks, and tools you are using.
+<p align="center">
+  <img src="https://i.imgur.com/h9aJKVG.gif" width="500" alt="soft aesthetic animation">
+</p>
 
-<p align="left">
-  <img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black" alt="React">
-  <img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=node.js&logoColor=white" alt="Node.js">
-  <img src="https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white" alt="Express.js">
-  <img src="https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white" alt="MongoDB">
-  <img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white" alt="CSS3">
-  <img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white" alt="HTML5">
-  <img src="https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white" alt="Figma">
+Traditional studying means juggling endless tabs — timer ⏱️, notes 📝, lectures 🎥, and distractions everywhere.  
+**Study Space** brings harmony to your study life — a serene digital room where focus flows naturally.
+
+> “A peaceful mind learns best.” 🕊️
+
+---
+
+## 🌼 Core Features
+
+### 🍃 1. Gentle Focus Timer  
+> Work with rhythm, not pressure.
+
+- ⏳ Pomodoro-inspired focus sessions  
+- 🌿 Smart breaks to recharge your mind  
+- 🕯️ Build calm consistency through flow
+
+<p align="center">
+  <img src="https://i.imgur.com/Usn2EvF.gif" width="300">
 </p>
 
 ---
 
-## 🏁 Getting Started
+### 📒 2. Floating Workspace  
+> Everything you need, gracefully organized.
 
-To get a local copy up and running, follow these simple steps.
+- 🪞 Floating notes, videos & playlists  
+- 🎨 Arrange your layout your way  
+- 🍀 “Focus Mode” to minimize visual noise
 
-### Prerequisites
+---
 
-Make sure you have Node.js and npm installed on your machine.
-* `npm`
-  ```sh
-  npm install npm@latest -g
+### 🎧 3. Seamless Media Bliss  
+
+<p align="center">
+  <img src="https://i.imgur.com/suC0zHq.gif" width="450" alt="music soft gif">
+</p>
+
+- 📺 Embed your YouTube lectures  
+- 🎶 Add Spotify lofi playlists for ambiance  
+- 🌈 Play media as your background while studying  
+
+---
+
+### 🪶 4. Notes & Sync  
+
+- 📝 Quick, minimalist floating notes  
+- ☁️ All synced securely with your Udriven account  
+- 📊 Track your study trends over time  
+
+<p align="center">
+  <img src="https://i.imgur.com/BtUABP8.gif" width="400">
+</p>
+
+---
+
+### 💫 5. Motivation Through Community
+
+> Stay connected, stay inspired.
+
+- 🏆 Leaderboards that celebrate progress  
+- 🌍 Global Study Network  
+- 💌 Gentle reminders and streak motivation
+
+---
+
+## ☁️ Create Your Study Vibe
+
+| Mode | Description |
+|------|--------------|
+| 🕯️ **Minimal Mode** | Just timer + notes for quiet focus |
+| 🌸 **Balanced Mode** | Add background music or lectures |
+| 🌈 **Flow Mode** | Full setup — music, notes, timer, and lecture in sync |
+
+> 🌷 *Build your space, build your peace.*
+
+---
+
+## 💻 Tech Stack
+
+<p align="center">
+  <img src="https://skillicons.dev/icons?i=react,nextjs,tailwind,firebase,spotify,youtube,figma" />
+</p>
+
+| Stack | Use |
+|-------|-----|
+| ⚛️ React.js / Next.js | Frontend |
+| 🎨 Tailwind CSS | Styling |
+| 🔥 Firebase / Firestore | Data + Auth |
+| 🎧 Spotify API | Music Integration |
+| 📺 YouTube Embed API | Media |
+
+---
+
+## 🪞 Quick Start
+
+```bash
+git clone https://github.com/your-username/study-space.git
+cd study-space
+npm install
+npm run dev
