@@ -57,6 +57,9 @@ h6 { font-size: var(--h5); }
     color: #e2e8f0;
     font-size: 1.05rem;
 }
+#dash:hover{
+    background-color: #5dade2;
+}
 
 .nav-link:hover {
     transform: scale(1.05);
