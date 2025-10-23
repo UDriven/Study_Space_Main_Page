@@ -26,6 +26,10 @@
         <aside id="sidebar" class="glass-effect w-64 flex-shrink-0 h-screen flex flex-col p-4 fixed z-40">
             <div class="flex items-center justify-between text-2xl font-bold text-white mb-10 pl-2">
                 <span class="sidebar-text">Udriven</span>
+                <button id="theme-toggle-btn" aria-label="Toggle dark/light mode" class="text-white p-1 rounded hover:bg-white/10        transition-colors ml-4">
+                    <i class="gg-sun"></i>
+                </button>
+
                 <button id="sidebar-toggle-btn" class="p-1 rounded-full hover:bg-white/10 transition-colors">
                      <i class="gg-menu-right-alt"></i>
                 </button>
@@ -90,7 +94,7 @@
             const sidebarToggleBtn = document.getElementById('sidebar-toggle-btn');
             const sidebarTexts = document.querySelectorAll('.sidebar-text');
             const navLinks = document.querySelectorAll('.nav-link');
-            
+
             const quotes = [
                 { text: "The secret of getting ahead is getting started.", author: "Mark Twain" },
                 { text: "Don't watch the clock; do what it does. Keep going.", author: "Sam Levenson" },
@@ -115,7 +119,7 @@
                 sidebar.classList.toggle('w-20');
                 mainContent.classList.toggle('ml-64');
                 mainContent.classList.toggle('ml-20');
-                
+
                 sidebarTexts.forEach(text => { text.classList.toggle('hidden'); });
                 navLinks.forEach(link => { link.classList.toggle('justify-center'); });
             });
@@ -128,12 +132,12 @@
                 'insights-content': `<div class="glass-effect rounded-xl p-6 main-content-panel animate-bouncy"><h1 class="text-3xl font-bold text-white">Insights</h1><p class="text-slate-300 mt-2">Here are your productivity insights.</p></div>`,
                 'settings-content': `<div class="glass-effect rounded-xl p-6 main-content-panel animate-bouncy"><h1 class="text-3xl font-bold text-white">Settings</h1><p class="text-slate-300 mt-2">Configure your application preferences.</p></div>`
             };
-            
+
             function setActiveLink(link) {
                 navLinks.forEach(item => item.classList.remove('active'));
                 link.classList.add('active');
             }
-            
+
             function showPage(targetId) {
                 mainContent.innerHTML = pageContents[targetId] || '<p>Content not found.</p>';
             }
@@ -146,22 +150,20 @@
 
             navLinks.forEach(link => {
                 link.addEventListener('click', function(event) {
-                    event.preventDefault(); 
+                    event.preventDefault();
                     const targetId = this.getAttribute('data-target');
                     setActiveLink(this);
                     showPage(targetId);
                 });
             });
 
-            // NEW: JS-driven animation script
             const animatedNavItems = document.querySelectorAll('.nav-item-animate');
             animatedNavItems.forEach((item, index) => {
                 setTimeout(() => {
                     item.classList.add('visible');
-                }, (index + 1) * 100); // 100ms stagger
+                }, (index + 1) * 100);
             });
         });
     </script>
-
 </body>
 </html>
