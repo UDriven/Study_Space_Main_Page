@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Udriven - Study Space</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://css.gg/css" rel="stylesheet" />
+    <script src="https://unpkg.com/feather-icons"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/dracula.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/javascript/javascript.min.js"></script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(115deg, #1e1b4b, #1e293b, #312e81);
+            color: #e2e8f0;
+            overflow-x: hidden;
+        }
+
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.02);
+            -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        
+        .nav-link { 
+            position: relative;
+            transition: transform 0.2s ease-in-out, background-color 0.2s; 
+            display: flex; /* Ensure flex for centering icon */
+            justify-content: center; /* Center icon */
+            align-items: center; /* Center icon */
+            width: 48px; /* Fixed width for icons */
+            height: 48px; /* Fixed height for icons */
+            padding: 0; /* Remove padding */
+        }
+        .nav-link:hover { transform: scale(1.1); } /* Slightly larger hover scale for icons */
+        .nav-link.active { background: rgba(255, 255, 255, 0.08); color: #ffffff; }
+        
+        /* Tooltip for sidebar icons */
+        .nav-link::after {
+            content: attr(title);
+            position: absolute;
+            left: 100%;
+            top: 50%;
+            transform: translateY(-50%) translateX(10px);
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s, transform 0.2s;
+            z-index: 50; /* Above other elements */
+        }
+        .nav-link:hover::after {
+            opacity: 1;
+            transform: translateY(-50%) translateX(5px);
+        }
+
+        #sidebar, #main-content { transition: all 0.3s ease-in-out; }
+        .main-content-panel { transition: opacity 0.3s ease-in-out; }
+
+        @keyframes bouncy {
+            0% { transform: scale(0.95); opacity: 0; }
+            70% { transform: scale(1.02); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .animate-bouncy { animation: bouncy 0.4s ease-out; }
+
+        /* Draggable Window Styles */
+        .draggable-window {
+            position: absolute;
+            z-index: 10;
+            background-color: #111827; /* Dark background for window content */
+            border: 1px solid #4f46e5;
+            border-radius: 8px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
+            min-width: 320px;
+            min-height: 240px;
+            resize: both; /* Allow resizing */
+            overflow: hidden; /* Hide scrollbars if content too big */
+        }
+        .draggable-header { 
+            cursor: grab; 
+            background-color: #4f46e5; 
+            padding: 8px; 
+            border-top-left-radius: 7px; 
+            border-top-right-radius: 7px; 
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .draggable-content { 
+            padding: 10px; 
+            color: #e2e8f0; /* Light text for content */
+            height: calc(100% - 40px); /* Adjust height for header */
+            overflow-y: auto;
+        }
+        .draggable-content iframe {
+            width: 100%;
+            height: 100%;
+            display: block; /* Remove extra space below iframe */
+        }
+        
+        /* CodeMirror Styling */
+        .CodeMirror { border: 1px solid #374151; border-radius: 5px; height: 200px; font-size: 0.9em; }
+        .CodeMirror-wrap { height: 100%; } /* Ensure it takes full height of parent */
+
+        /* New Right Option Bar Styling */
+        #right-options-launcher {
+            position: fixed;
+            top: 50%;
+            right: 0;
+            transform: translateY(-50%);
+            width: 60px; /* Width of the bar */
+            background: rgba(255, 255, 255, 0.05); /* Slightly transparent white */
+            backdrop-filter: blur(10px);
+            border-top-left-radius: 8px;
+            border-bottom-left-radius: 8px;
+            padding: 10px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px; /* Spacing between icons */
+            z-index: 50; /* High z-index */
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        #right-options-launcher button {
+            background: none;
+            border: none;
+            color: #e2e8f0; /* Icon color */
+            padding: 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.2s;
+            position: relative; /* For tooltip */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #right-options-launcher button:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: scale(1.1);
+        }
+
+        /* Tooltip for right bar icons */
+        #right-options-launcher button::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            right: 100%;
+            top: 50%;
+            transform: translateY(-50%) translateX(-10px);
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s, transform 0.2s;
+            z-index: 50;
+        }
+        #right-options-launcher button:hover::after {
+            opacity: 1;
+            transform: translateY(-50%) translateX(-5px);
+        }
+
+        /* Styles for inputs and buttons inside draggable windows */
+        .draggable-content input, .draggable-content textarea, .draggable-content select {
+            background-color: #374151; /* Darker input fields */
+            color: #e2e8f0;
+            border: 1px solid #4f46e5;
+            padding: 6px;
+            border-radius: 4px;
+        }
+        .draggable-content button:not(.close-btn, .fullscreen-btn) { /* General button style */
+            background-color: #4f46e5;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+        .draggable-content button:hover:not(.close-btn, .fullscreen-btn) {
+            background-color: #6366f1;
+        }
+        .draggable-content .bg-red-600:hover { background-color: #ef4444; }
+        .draggable-content .bg-gray-600:hover { background-color: #4b5563; }
+
+        .sticky-note {
+            background-color: #ffc; /* Classic sticky note yellow */
+            color: #333;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+            font-size: 0.9em;
+            cursor: grab;
+            position: absolute;
+            min-width: 150px;
+            min-height: 100px;
+            resize: both;
+            overflow: auto;
+        }
+    </style>
+</head>
+<body class="text-white">
+
+    <div class="flex min-h-screen">
+        <aside id="sidebar" class="glass-effect w-20 flex-shrink-0 h-screen flex flex-col p-4 fixed z-40">
+            <div class="flex items-center justify-center text-2xl font-bold text-white mb-10 pl-2">
+                <button id="sidebar-toggle-btn" class="p-1 rounded-full hover:bg-white/10 transition-colors hidden">
+                     <i class="gg-menu-right-alt"></i>
+                </button>
+            </div>
+            
+            <nav class="flex-grow flex flex-col gap-2 items-center">
+                <a href="#" data-target="dashboard-content" class="nav-link rounded-full text-slate-300 hover:text-white" title="Dashboard">
+                    <i data-feather="grid" class="h-6 w-6"></i>
+                </a>
+                <a href="#" data-target="study-content" class="nav-link rounded-full text-slate-300 hover:text-white active" title="Study Space">
+                    <i data-feather="book-open" class="h-6 w-6"></i>
+                </a>
+                 <a href="#" data-target="todo-content" class="nav-link rounded-full text-slate-300 hover:text-white" title="To-Do Grid">
+                    <i data-feather="check-square" class="h-6 w-6"></i>
+                </a>
+                <a href="#" data-target="settings-content" class="nav-link rounded-full text-slate-300 hover:text-white" title="Settings">
+                    <i data-feather="settings" class="h-6 w-6"></i>
+                </a>
+            </nav>
+            
+            <div class="mt-auto text-center hidden"> <div class="border-t border-white/10 pt-4">
+                    <p id="quote-text" class="text-sm text-slate-400 italic"></p>
+                    <p id="quote-author" class="text-xs text-slate-500 text-right mt-2"></p>
+                </div>
+                 <div class="text-center pt-2">
+                    <p class="text-xs text-slate-500">Made with ❤️ by Udriven Teams</p>
+                </div>
+            </div>
+        </aside>
+
+        <main id="main-content" class="flex-1 ml-20 p-8 relative">
+             </main>
+        
+        <div id="right-options-launcher">
+            <button data-window-type="timer" data-tooltip="Timer & Goals">
+                <i data-feather="clock" class="h-6 w-6"></i>
+            </button>
+            <button data-window-type="youtube" data-tooltip="YouTube Player">
+                <i data-feather="youtube" class="h-6 w-6"></i>
+            </button>
+            <button data-window-type="notebooks" data-tooltip="Notebooks">
+                <i data-feather="edit" class="h-6 w-6"></i>
+            </button>
+            <button data-window-type="checklist" data-tooltip="Checklist">
+                <i data-feather="check-circle" class="h-6 w-6"></i>
+            </button>
+            <button data-window-type="ambient-music" data-tooltip="Ambient Sounds">
+                <i data-feather="music" class="h-6 w-6"></i>
+            </button>
+            <button data-window-type="spotify" data-tooltip="Spotify">
+                <i data-feather="spotify" class="h-6 w-6"></i>
+            </button>
+            <button data-window-type="ai-assistant" data-tooltip="AI Assistant">
+                <i data-feather="cpu" class="h-6 w-6"></i>
+            </button>
+        </div>
+
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- CORE UI AND NAVIGATION ---
+        const mainContent = document.getElementById('main-content');
+        const sidebar = document.getElementById('sidebar');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const rightOptionsLauncher = document.getElementById('right-options-launcher');
+        
+        // --- Quote Generator (Hidden in compact mode, but keeping logic) ---
+        const quotes = [
+            { text: "The secret of getting ahead is getting started.", author: "Mark Twain" },
+            { text: "Don't watch the clock; do what it does. Keep going.", author: "Sam Levenson" },
+            { text: "The future depends on what you do today.", author: "Mahatma Gandhi" }
+        ];
+        const quoteTextElement = document.getElementById('quote-text');
+        const quoteAuthorElement = document.getElementById('quote-author');
+
+        function displayRandomQuote() {
+            const randomIndex = Math.floor(Math.random() * quotes.length);
+            if (quoteTextElement) quoteTextElement.textContent = `"${quotes[randomIndex].text}"`;
+            if (quoteAuthorElement) quoteAuthorElement.textContent = `- ${quotes[randomIndex].author}`;
+        }
+        displayRandomQuote();
+        // setInterval(displayRandomQuote, 10000); // Comment out if not needed visually
+
+        // --- Sidebar Navigation ---
+        // Sidebar toggle button is hidden, sidebar remains compact
+        // The sidebar is now fixed at w-20 and texts are removed/hidden by CSS.
+
+        const pageContents = {
+            'dashboard-content': `<div class="glass-effect rounded-xl p-6 main-content-panel animate-bouncy"><h1 class="text-3xl font-bold text-white">Dashboard</h1><p class="text-slate-300 mt-2">Welcome back!</p></div>`,
+            'study-content': `<div id="study-area-placeholder" class="glass-effect rounded-xl p-6 main-content-panel animate-bouncy"><h1 class="text-3xl font-bold text-white">Study Space</h1><p class="text-slate-300 mt-2">Click icons on the right to open study tools.</p></div>`,
+            'todo-content': `<div class="glass-effect rounded-xl p-6 main-content-panel animate-bouncy"><h1 class="text-3xl font-bold text-white">To Do Grid (Separate from Study Checklist)</h1></div>`,
+            'settings-content': `<div class="glass-effect rounded-xl p-6 main-content-panel animate-bouncy"><h1 class="text-3xl font-bold text-white">Settings</h1></div>`
+        };
+
+        function setActiveLink(link) {
+            navLinks.forEach(item => item.classList.remove('active'));
+            link.classList.add('active');
+        }
+
+        function showPage(targetId) {
+            mainContent.innerHTML = pageContents[targetId] || '<p>Content not found.</p>';
+            // Show/hide the right launcher based on if we are in study space
+            if (targetId === 'study-content') {
+                rightOptionsLauncher.classList.remove('hidden');
+            } else {
+                rightOptionsLauncher.classList.add('hidden');
+            }
+        }
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('data-target');
+                setActiveLink(link);
+                showPage(targetId);
+            });
+        });
+
+        // --- Initialize with 'study-content' as default and active link ---
+        const initialStudyLink = document.querySelector('.nav-link[data-target="study-content"]');
+        if (initialStudyLink) {
+            setActiveLink(initialStudyLink);
+            showPage('study-content');
+        } else if (navLinks.length > 0) {
+            setActiveLink(navLinks[0]);
+            showPage(navLinks[0].getAttribute('data-target'));
+        }
+
+        // --- Feather Icons ---
+        feather.replace();
+
+        // --- DRAGGABLE WINDOW UTILITIES ---
+        let zIndexCounter = 1000; // Start high for windows
+
+        function makeDraggableAndResizable(element) {
+            let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+            const header = element.querySelector('.draggable-header');
+
+            // Bring to front on click
+            element.addEventListener('mousedown', () => {
+                element.style.zIndex = zIndexCounter++;
+            });
+
+            if (header) {
+                header.onmousedown = dragMouseDown;
+                header.style.cursor = 'grab'; // Change cursor when over header
+            }
+
+            function dragMouseDown(e) {
+                e.preventDefault();
+                // Get the mouse cursor position at startup:
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+                document.onmouseup = closeDragElement;
+                document.onmousemove = elementDrag;
+                header.style.cursor = 'grabbing'; // Change cursor when dragging
+            }
+
+            function elementDrag(e) {
+                e.preventDefault();
+                // Calculate the new cursor position:
+                pos1 = pos3 - e.clientX;
+                pos2 = pos4 - e.clientY;
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+                // Set the element's new position:
+                element.style.top = (element.offsetTop - pos2) + "px";
+                element.style.left = (element.offsetLeft - pos1) + "px";
+            }
+
+            function closeDragElement() {
+                // Stop moving when mouse button is released:
+                document.onmouseup = null;
+                document.onmousemove = null;
+                if (header) header.style.cursor = 'grab'; // Reset cursor
+            }
+        }
+
+        function createDraggableWindow(title, contentHTML, initialWidth = 400, initialHeight = 300) {
+            const windowId = `window-${Date.now()}`;
+            const draggableWindow = document.createElement('div');
+            draggableWindow.className = 'draggable-window absolute';
+            draggableWindow.id = windowId;
+            draggableWindow.style.width = `${initialWidth}px`;
+            draggableWindow.style.height = `${initialHeight}px`;
+            draggableWindow.style.top = `${Math.random() * (window.innerHeight - initialHeight - 100) + 50}px`; // Random initial position
+            draggableWindow.style.left = `${Math.random() * (window.innerWidth - initialWidth - 100) + 50}px`;
+            draggableWindow.style.zIndex = zIndexCounter++;
+
+            draggableWindow.innerHTML = `
+                <div class="draggable-header text-white flex justify-between items-center">
+                    <span class="font-bold">${title}</span>
+                    <div>
+                        <button class="fullscreen-btn p-1 text-white hover:bg-white/20 rounded-full"><i data-feather="maximize" class="h-4 w-4"></i></button>
+                        <button class="close-btn p-1 text-white hover:bg-white/20 rounded-full"><i data-feather="x" class="h-4 w-4"></i></button>
+                    </div>
+                </div>
+                <div class="draggable-content" style="height: calc(100% - 40px);">
+                    ${contentHTML}
+                </div>
+            `;
+            mainContent.appendChild(draggableWindow);
+            feather.replace(); // Re-render icons for new window
+
+            makeDraggableAndResizable(draggableWindow);
+
+            // Close button
+            draggableWindow.querySelector('.close-btn').addEventListener('click', () => {
+                draggableWindow.remove();
+                // If it was a timer, clear interval
+                if (title.includes('Timer')) {
+                    clearInterval(windowTimers[windowId]);
+                    delete windowTimers[windowId];
+                }
+            });
+
+            // Fullscreen button
+            draggableWindow.querySelector('.fullscreen-btn').addEventListener('click', () => {
+                draggableWindow.classList.toggle('fixed');
+                draggableWindow.classList.toggle('inset-0');
+                draggableWindow.classList.toggle('w-full');
+                draggableWindow.classList.toggle('h-full');
+                // Adjust iframe/editor height if in fullscreen
+                const contentDiv = draggableWindow.querySelector('.draggable-content');
+                if (draggableWindow.classList.contains('fixed')) {
+                    contentDiv.style.height = 'calc(100% - 40px)'; // Full height minus header
+                } else {
+                    // Reset to original relative height if not fixed
+                    contentDiv.style.height = `calc(100% - 40px)`;
+                }
+                 // Refresh CodeMirror if it exists in the window
+                const cmInstance = draggableWindow.querySelector('.CodeMirror')?.CodeMirror;
+                if (cmInstance) {
+                    cmInstance.refresh();
+                }
+            });
+
+            return draggableWindow;
+        }
+
+        // --- STUDY SPACE FEATURES as Draggable Windows ---
+
+        // Map to store timer intervals for multiple timers
+        const windowTimers = {};
+
+        function createTimerWindow() {
+            const timerWindow = createDraggableWindow('Timer & Goals', `
+                <div class="text-center my-4">
+                    <h3 class="text-xl font-semibold text-white" data-mode-display>Focus</h3>
+                    <p class="text-6xl font-bold text-white" data-timer-display>25:00</p>
+                </div>
+                <div class="flex justify-center gap-4">
+                    <button data-action="start" class="bg-indigo-600 text-white px-4 py-2 rounded">Start</button>
+                    <button data-action="pause" class="bg-gray-600 text-white px-4 py-2 rounded">Pause</button>
+                    <button data-action="reset" class="bg-red-600 text-white px-4 py-2 rounded">Reset</button>
+                </div>
+                <div class="mt-4 space-y-2 text-white">
+                    <div>
+                        <label class="block text-sm font-medium">Focus (min):</label>
+                        <input type="number" value="25" data-duration-input="focus" class="w-full p-1 border rounded">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium">Short Break (min):</label>
+                        <input type="number" value="5" data-duration-input="short" class="w-full p-1 border rounded">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium">Long Break (min):</label>
+                        <input type="number" value="15" data-duration-input="long" class="w-full p-1 border rounded">
+                    </div>
+                </div>
+                <div class="mt-4 p-2 bg-gray-700 rounded text-white">
+                    <h4 class="font-bold">Today's Stats</h4>
+                    <p>Focus Time: <span data-stats-focus-time>0</span> min</p>
+                    <p>Breaks Taken: <span data-stats-breaks-taken>0</span></p>
+                </div>
+            `, 350, 500);
+
+            const timerDisplay = timerWindow.querySelector('[data-timer-display]');
+            const timerMode = timerWindow.querySelector('[data-mode-display]');
+            const startBtn = timerWindow.querySelector('[data-action="start"]');
+            const pauseBtn = timerWindow.querySelector('[data-action="pause"]');
+            const resetBtn = timerWindow.querySelector('[data-action="reset"]');
+            const focusDurationInput = timerWindow.querySelector('[data-duration-input="focus"]');
+            const shortBreakDurationInput = timerWindow.querySelector('[data-duration-input="short"]');
+            const longBreakDurationInput = timerWindow.querySelector('[data-duration-input="long"]');
+            const statsFocusTimeDisplay = timerWindow.querySelector('[data-stats-focus-time]');
+            const statsBreaksTakenDisplay = timerWindow.querySelector('[data-stats-breaks-taken]');
+
+            let timeLeft;
+            let isPaused = true;
+            let currentMode = 'focus'; // focus, short, long
+            let cycles = 0;
+            let timerInstanceId = timerWindow.id; // Unique ID for this timer instance
+
+            let stats = JSON.parse(localStorage.getItem(`studyStats_${timerInstanceId}`)) || { focusTime: 0, breaks: 0 };
+
+            function updateStatsDisplay() {
+                statsFocusTimeDisplay.textContent = stats.focusTime;
+                statsBreaksTakenDisplay.textContent = stats.breaks;
+            }
+
+            function getDuration(mode) {
+                switch(mode) {
+                    case 'focus': return parseInt(focusDurationInput.value) * 60;
+                    case 'short': return parseInt(shortBreakDurationInput.value) * 60;
+                    case 'long': return parseInt(longBreakDurationInput.value) * 60;
+                    default: return 25 * 60;
+                }
+            }
+
+            function updateDisplay() {
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                timerDisplay.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            }
+
+            function switchMode() {
+                clearInterval(windowTimers[timerInstanceId]);
+                isPaused = true;
+                startBtn.textContent = "Start";
+                
+                if (currentMode === 'focus') {
+                    stats.focusTime += getDuration('focus') / 60;
+                    stats.breaks++;
+                    cycles++;
+                    currentMode = (cycles % 4 === 0) ? 'long' : 'short';
+                    timerMode.textContent = currentMode === 'long' ? "Long Break" : "Short Break";
+                } else {
+                    currentMode = 'focus';
+                    timerMode.textContent = "Focus";
+                }
+                localStorage.setItem(`studyStats_${timerInstanceId}`, JSON.stringify(stats));
+                updateStatsDisplay();
+                resetTimer();
+                alert(`${timerMode.textContent} session starts now!`);
+            }
+
+            function countdown() {
+                if (isPaused) return;
+                if (timeLeft > 0) {
+                    timeLeft--;
+                    updateDisplay();
+                } else {
+                    switchMode();
+                }
+            }
+            
+            function resetTimer() {
+                clearInterval(windowTimers[timerInstanceId]);
+                timeLeft = getDuration(currentMode);
+                updateDisplay();
+                isPaused = true;
+                startBtn.textContent = "Start";
+            }
+
+            startBtn.addEventListener('click', () => {
+                if (isPaused) {
+                    isPaused = false;
+                    startBtn.textContent = "Resume";
+                    windowTimers[timerInstanceId] = setInterval(countdown, 1000);
+                }
+            });
+            pauseBtn.addEventListener('click', () => {
+                isPaused = true;
+                startBtn.textContent = "Resume";
+            });
+            resetBtn.addEventListener('click', resetTimer);
+            
+            // Init timer
+            resetTimer();
+            updateStatsDisplay();
+        }
+
+        function createYouTubeWindow() {
+            const youtubeWindow = createDraggableWindow('YouTube Player', `
+                <div class="flex gap-2 mb-2">
+                    <input type="text" data-youtube-url-input placeholder="Paste link here..." class="flex-grow p-1 border rounded text-white bg-gray-700">
+                    <button data-action="add-youtube-video" class="bg-indigo-600 text-white px-3 py-1 rounded">Add</button>
+                </div>
+                <div data-youtube-players-container class="space-y-2" style="height: calc(100% - 50px); overflow-y: auto;">
+                    </div>
+            `, 480, 360); // Default size for a YouTube player
+
+            const urlInput = youtubeWindow.querySelector('[data-youtube-url-input]');
+            const addVideoBtn = youtubeWindow.querySelector('[data-action="add-youtube-video"]');
+            const playersContainer = youtubeWindow.querySelector('[data-youtube-players-container]');
+
+            function getYouTubeVideoId(url) {
+                const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+                const match = url.match(regExp);
+                return (match && match[2].length === 11) ? match[2] : null;
+            }
+
+            addVideoBtn.addEventListener('click', () => {
+                const videoId = getYouTubeVideoId(urlInput.value);
+                if (videoId) {
+                    const playerWrapper = document.createElement('div');
+                    playerWrapper.className = 'youtube-player-item relative';
+                    playerWrapper.style.paddingBottom = '56.25%'; /* 16:9 Aspect Ratio */
+                    playerWrapper.style.height = '0';
+                    playerWrapper.style.overflow = 'hidden';
+                    playerWrapper.innerHTML = `
+                        <iframe class="absolute top-0 left-0 w-full h-full" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        <button class="absolute top-1 right-1 bg-red-600 text-white p-1 rounded-full text-xs opacity-80 hover:opacity-100 remove-yt-player-btn">
+                            <i data-feather="x" class="h-3 w-3"></i>
+                        </button>
+                    `;
+                    playersContainer.appendChild(playerWrapper);
+                    feather.replace(); // Re-render icons
+
+                    playerWrapper.querySelector('.remove-yt-player-btn').addEventListener('click', () => {
+                        playerWrapper.remove();
+                    });
+                    urlInput.value = '';
+                } else {
+                    alert('Please enter a valid YouTube URL.');
+                }
+            });
+        }
+
+        function createNotebooksWindow() {
+            const notebooksWindow = createDraggableWindow('Notebooks', `
+                <h4 class="font-bold mb-1 text-white">Simple Notebook</h4>
+                <div class="flex gap-2 p-1 bg-gray-700 rounded-t-md mb-1">
+                    <button class="color-btn" data-color="black" title="Black">⚫</button>
+                    <button class="color-btn" data-color="red" title="Red">🔴</button>
+                    <button class="color-btn" data-color="blue" title="Blue">🔵</button>
+                    <button class="color-btn" data-color="green" title="Green">🟢</button>
+                    <button class="bg-indigo-600 text-white px-2 py-1 rounded text-sm ml-auto" data-action="make-sticky-simple">Sticky Note</button>
+                </div>
+                <div data-simple-notebook-editor contenteditable="true" class="h-40 p-2 border border-t-0 rounded-b-md bg-gray-800 text-white focus:outline-none mb-4"></div>
+
+                <h4 class="font-bold mb-1 text-white">Coder's Notebook</h4>
+                <textarea data-coders-notebook-editor class="w-full h-40"></textarea>
+                <div class="mt-2 text-right">
+                    <button class="bg-indigo-600 text-white px-2 py-1 rounded text-sm" data-action="make-sticky-coder">Sticky Note</button>
+                </div>
+            `, 500, 600);
+
+            const simpleEditor = notebooksWindow.querySelector('[data-simple-notebook-editor]');
+            const makeStickySimpleBtn = notebooksWindow.querySelector('[data-action="make-sticky-simple"]');
+            
+            // Initialize simple editor
+            simpleEditor.innerHTML = localStorage.getItem(`simpleNote_${notebooksWindow.id}`) || 'Start typing your notes here...';
+            simpleEditor.addEventListener('input', () => {
+                localStorage.setItem(`simpleNote_${notebooksWindow.id}`, simpleEditor.innerHTML);
+            });
+            notebooksWindow.querySelectorAll('.color-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.execCommand('foreColor', false, btn.dataset.color);
+                });
+            });
+
+            makeStickySimpleBtn.addEventListener('click', () => {
+                const selectedText = window.getSelection().toString();
+                const noteContent = selectedText || simpleEditor.innerHTML;
+                if (noteContent.trim()) {
+                    createStickyNote(noteContent);
+                }
+            });
+
+            // Initialize Coder's Notebook
+            const coderEditorTextArea = notebooksWindow.querySelector('[data-coders-notebook-editor]');
+            const makeStickyCoderBtn = notebooksWindow.querySelector('[data-action="make-sticky-coder"]');
+            const coderEditor = CodeMirror.fromTextArea(coderEditorTextArea, {
+                lineNumbers: true,
+                mode: 'javascript',
+                theme: 'dracula',
+                lineWrapping: true
+            });
+            coderEditor.setValue(localStorage.getItem(`coderNote_${notebooksWindow.id}`) || '// Your code notes here...');
+            coderEditor.on('change', () => {
+                localStorage.setItem(`coderNote_${notebooksWindow.id}`, coderEditor.getValue());
+            });
+
+            makeStickyCoderBtn.addEventListener('click', () => {
+                const selectedText = coderEditor.getSelection();
+                const noteContent = selectedText || coderEditor.getValue();
+                if (noteContent.trim()) {
+                    createStickyNote(`<pre>${noteContent}</pre>`); // Use pre for code formatting
+                }
+            });
+
+            // Ensure CodeMirror resizes correctly when its parent window resizes
+            new ResizeObserver(entries => {
+                for (let entry of entries) {
+                    if (entry.target === notebooksWindow) {
+                        coderEditor.refresh();
+                    }
+                }
+            }).observe(notebooksWindow);
+        }
+
+        function createStickyNote(content) {
+            const stickyNote = document.createElement('div');
+            stickyNote.className = 'sticky-note';
+            stickyNote.innerHTML = content;
+            stickyNote.style.top = `${Math.random() * (window.innerHeight - 200)}px`;
+            stickyNote.style.left = `${Math.random() * (window.innerWidth - 200)}px`;
+            stickyNote.style.zIndex = zIndexCounter++;
+
+            mainContent.appendChild(stickyNote);
+            makeDraggableAndResizable(stickyNote); // Make sticky notes draggable and resizable
+        }
+
+
+        function createChecklistWindow() {
+            const checklistWindow = createDraggableWindow('Checklist', `
+                <div class="flex gap-2 mb-2">
+                    <input type="text" data-checklist-input placeholder="New task..." class="flex-grow p-1 border rounded bg-gray-700 text-white">
+                    <button data-action="add-checklist-item" class="bg-indigo-600 text-white px-3 py-1 rounded">Add</button>
+                </div>
+                <ul data-checklist-ul class="mt-2 space-y-1 list-none text-white"></ul>
+            `, 350, 400);
+
+            const checklistInput = checklistWindow.querySelector('[data-checklist-input]');
+            const addChecklistItemBtn = checklistWindow.querySelector('[data-action="add-checklist-item"]');
+            const checklistUl = checklistWindow.querySelector('[data-checklist-ul]');
+            let checklistItems = JSON.parse(localStorage.getItem(`checklist_${checklistWindow.id}`)) || [];
+
+            function renderChecklist() {
+                checklistUl.innerHTML = '';
+                checklistItems.forEach((item, index) => {
+                    const li = document.createElement('li');
+                    li.className = 'flex items-center justify-between p-2 bg-gray-700 rounded hover:bg-gray-600 transition-colors';
+                    li.innerHTML = `
+                        <label class="flex items-center gap-2 flex-grow cursor-pointer">
+                            <input type="checkbox" data-index="${index}" ${item.done ? 'checked' : ''} class="form-checkbox h-4 w-4 text-indigo-600 bg-gray-800 border-gray-600 rounded">
+                            <span class="${item.done ? 'line-through text-gray-400' : 'text-white'} text-sm">${item.text}</span>
+                        </label>
+                        <button data-index="${index}" class="text-red-400 hover:text-red-600 remove-item-btn p-1 rounded-full"><i data-feather="x" class="h-4 w-4"></i></button>
+                    `;
+                    checklistUl.appendChild(li);
+                });
+                feather.replace(); // Refresh icons
+            }
+
+            function addChecklistItem() {
+                const text = checklistInput.value.trim();
+                if (text) {
+                    checklistItems.push({ text: text, done: false });
+                    checklistInput.value = '';
+                    saveAndRenderChecklist();
+                }
+            }
+            
+            function saveAndRenderChecklist() {
+                localStorage.setItem(`checklist_${checklistWindow.id}`, JSON.stringify(checklistItems));
+                renderChecklist();
+            }
+
+            addChecklistItemBtn.addEventListener('click', addChecklistItem);
+            checklistInput.addEventListener('keypress', (e) => { if(e.key === 'Enter') addChecklistItem(); });
+            
+            checklistUl.addEventListener('click', (e) => {
+                if (e.target.type === 'checkbox') {
+                    const index = e.target.dataset.index;
+                    checklistItems[index].done = !checklistItems[index].done;
+                    saveAndRenderChecklist();
+                }
+                if (e.target.classList.contains('remove-item-btn')) {
+                    const index = e.target.dataset.index;
+                    checklistItems.splice(index, 1);
+                    saveAndRenderChecklist();
+                }
+            });
+            renderChecklist();
+        }
+
+        function createAmbientMusicWindow() {
+            const ambientWindow = createDraggableWindow('Ambient Sounds', `
+                <div class="space-y-2">
+                    <button class="play-audio-btn w-full text-left p-2 bg-gray-700 rounded text-white hover:bg-gray-600 transition-colors" data-src="https://www.soundjay.com/nature/rain-01.mp3">Rain 🌧️</button>
+                    <button class="play-audio-btn w-full text-left p-2 bg-gray-700 rounded text-white hover:bg-gray-600 transition-colors" data-src="https://www.soundjay.com/nature/forest-01.mp3">Forest 🌲</button>
+                    <p class="text-sm text-gray-400 mt-2">Note: Sounds may not loop perfectly or be long enough for extended study.</p>
+                    <audio data-background-audio loop class="hidden"></audio>
+                </div>
+            `, 250, 250);
+
+            const audioPlayer = ambientWindow.querySelector('[data-background-audio]');
+            let currentAudioBtn = null;
+
+            ambientWindow.querySelectorAll('.play-audio-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    if (currentAudioBtn === btn) { // If clicking the same button
+                        if (audioPlayer.paused) {
+                            audioPlayer.play();
+                            btn.classList.add('bg-indigo-600');
+                        } else {
+                            audioPlayer.pause();
+                            btn.classList.remove('bg-indigo-600');
+                        }
+                    } else { // Clicking a new button
+                        if(currentAudioBtn) currentAudioBtn.classList.remove('bg-indigo-600');
+                        audioPlayer.src = btn.dataset.src;
+                        audioPlayer.play();
+                        btn.classList.add('bg-indigo-600');
+                        currentAudioBtn = btn;
+                    }
+                });
+            });
+        }
+
+        function createSpotifyWindow() {
+            createDraggableWindow('Spotify', `
+                <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGoYBM5M?utm_source=generator" width="100%" height="100%" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+            `, 350, 450); // Default Spotify embed size
+        }
+
+        function createAiAssistantWindow() {
+            createDraggableWindow('AI Assistant', `
+                <div class="bg-gray-700 h-full flex flex-col rounded text-gray-300">
+                    <div class="flex-grow p-2 text-sm overflow-y-auto">
+                        <p><b>AI Helper:</b> Hi there! How can I help you focus today? <br><br><i>(This is a UI mockup. A real AI requires backend integration.)</i></p>
+                    </div>
+                    <input type="text" placeholder="Ask me anything..." class="w-full p-2 border-t border-gray-600 rounded-b bg-gray-800 text-white" disabled>
+                </div>
+            `, 350, 400);
+        }
+
+        // --- Right Options Launcher Actions ---
+        rightOptionsLauncher.addEventListener('click', (e) => {
+            const button = e.target.closest('button');
+            if (button) {
+                const windowType = button.dataset.windowType;
+                switch (windowType) {
+                    case 'timer': createTimerWindow(); break;
+                    case 'youtube': createYouTubeWindow(); break;
+                    case 'notebooks': createNotebooksWindow(); break;
+                    case 'checklist': createChecklistWindow(); break;
+                    case 'ambient-music': createAmbientMusicWindow(); break;
+                    case 'spotify': createSpotifyWindow(); break;
+                    case 'ai-assistant': createAiAssistantWindow(); break;
+                    default: console.warn('Unknown window type:', windowType);
+                }
+            }
+        });
+    });
+    </script>
+</body>
+</html>
